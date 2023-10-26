@@ -9,7 +9,6 @@ function App() {
 
   async function handleClick(message: Message, reaction: string)
   {
-    console.log(message.reactions)
     await message.toggleReaction(reaction)
   }
 
