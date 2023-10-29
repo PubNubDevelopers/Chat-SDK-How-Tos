@@ -33,16 +33,18 @@ function App() {
     }
   }
 
-  /*
+  
   async function handleSend(event: React.SyntheticEvent) {
     event.preventDefault()
+    /*
     if (!text || !channel || !newMessageDraft) return
     newMessageDraft.send()
     setNewMessageDraft(channel.createMessageDraft({ userSuggestionSource: "channel"}))
     setRenderedMessage([])
     setText("")
+    */
   }
-  */
+  
 
   async function pickSuggestedUser(user:User) {
     if (!newMessageDraft) return
@@ -224,7 +226,7 @@ function App() {
         </div>
       </li>
       </ol>
-        <form className="message-input">
+        <form className="message-input" onSubmit={handleSend}>
         <input
           ref={inputRef}
           autoFocus
