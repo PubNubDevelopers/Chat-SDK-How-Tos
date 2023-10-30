@@ -72,7 +72,10 @@ function App() {
       setChannel(channel)
 
       let { messages } = await channel.getHistory( {count: 1} )
-      if (!messages || messages.length !== 1 ) return;
+      if (!messages || messages.length !== 1 ) {
+        await handleResetApp();
+        return;
+      }
       let rootMessage = messages[0]
       setRootMessage(rootMessage)
 
