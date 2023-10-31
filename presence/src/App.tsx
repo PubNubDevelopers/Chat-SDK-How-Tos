@@ -61,9 +61,9 @@ export default function App() {
 
   async function wherePresent()
   {
-    if (chat)
+    if (channel)
     {
-      const channelIds = await chat.whoIsPresent("test-channel-public")
+      const channelIds = await channel.whoIsPresent()
       updatePresenceUI(channelIds)
     }
   }
@@ -112,7 +112,7 @@ export default function App() {
       const myMemberships = await chat.currentUser.getMemberships()
       setMembershipMsg("Number of channels I am a member of: " + myMemberships.memberships.length)
 
-      //setChannel(channel)
+      setChannel(channel)
 
       const stopUpdates = channel.streamPresence((userIds: string[]) => {
         updatePresenceUI(userIds)
