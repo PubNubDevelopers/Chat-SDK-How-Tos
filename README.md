@@ -8,7 +8,7 @@ Simple demos showing how to use specific aspects of the Chat SDK
 | [Add Reactions and Emoji to Messages](https://github.com/PubNubDevelopers/Chat-SDK-How-Tos/tree/main/reactions) | Show how to add, remove and manage message reactions.  Accompanying How-to: [How to add Reactions and Emoji to Messages](https://pubnub.com/how-to/chat-sdk-add-reactions-to-messages/) | [Hosted Demo](https://chat-sdk-how-to-reactions.netlify.app/) |
 | [Create Threads and Quote Messages](https://github.com/PubNubDevelopers/Chat-SDK-How-Tos/tree/main/threads-quotes) | Start a message thread, contribute to that thread and quote messages on that thread.  Accompanying How-to: [How to Create Threads and Quote Messages](https://pubnub.com/how-to/chat-sdk-create-threads-and-quote-messges/) | [Hosted Demo](https://chat-sdk-how-to-threads-quotes.netlify.app/) |
 | [Mention Users and Channels](https://github.com/PubNubDevelopers/Chat-SDK-How-Tos/tree/main/mentions) | Tag @Users and #Channels to give them context, allowing the recpient to take action such as hyperlinking to that user's profile.  Accompanying How-to: [How to Mention Users and Channels](https://pubnub.com/how-to/chat-sdk-mention-users/) | [Hosted Demo](https://chat-sdk-how-to-mentions.netlify.app/) |
-| Moderate & Report Message | Coming soon... | Coming soon... |
+| Moderate & Report Messages | Coming soon... | Coming soon... |
 
 
 ## Usage Notes

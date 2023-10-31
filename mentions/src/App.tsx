@@ -119,8 +119,6 @@ function App() {
     {
       setSuggestedChannels(response.channels.suggestedChannels)
       setLastAffectedChannelOccurrenceIndex(response.channels.channelOccurrenceIndex)
-      console.log("Suggested Channels")
-      console.log(response.channels.suggestedChannels)
     }
     else
     {

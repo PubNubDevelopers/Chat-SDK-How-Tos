@@ -1,0 +1,132 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+* {
+  color: #585858;
+  line-height: normal;
+  margin: 0;
+}
+
+html {
+  font-family:Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  height: 100%;
+}
+
+body {
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  height: 100%;
+}
+
+button {
+  margin-top: 5px;
+}
+
+h3 {
+  margin-top: 5px;
+}
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+section{
+  border: solid #d0dae5;
+  border-width: 1px 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  overflow-y: auto;
+}
+
+ol {
+  list-style: none;
+  max-height: 100%;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  margin: 10px 0;
+}
+
+aside {
+  border-radius: 100%;
+  color: #f0f3f7;
+  height: 32px;
+  line-height: 32px;
+  margin: 2px 16px;
+  text-align: center;
+  width: 32px;
+}
+
+time {
+  font-size: 0.9rem;
+  font-weight: 300;
+  padding: 0 10px;
+}
+
+p {
+  margin: 10px 0;
+}
+
+form {
+  display: flex;
+  padding: 16px;
+}
+
+input {
+  background: #e4e9f0;
+  border-radius: 15px;
+  border: none;
+  padding: 8px 14px;
+  width: 100%;
+}
+
+input[type=submit] {
+  cursor: pointer;
+  margin-left: 10px;
+  width: auto;
+}
