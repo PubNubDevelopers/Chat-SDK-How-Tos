@@ -1,122 +1,77 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Channel, Chat, Message, MixedTextTypedElement, TimetokenUtils, User } from "@pubnub/chat"
+import { Chat, Membership } from "@pubnub/chat"
 
 export default function App() {
   const [chat, setChat] = useState<Chat>()
-  const [otherUser, setOtherUser] = useState<User>()
-  const [channel, setChannel] = useState<Channel>()
+  const [myMemberships, setMyMemberships] = useState<Membership[]>([])
 
-  const [membershipMsg, setMembershipMsg] = useState("")
-  const [presenceMsg, setPresenceMsg] = useState("")
-  const [disconnect, setDisconnect] = useState(() => () => console.log('default disconnect function'))
+  const CHANNEL_NAME_1 = "test-membership-channel-1"
+  const CHANNEL_NAME_2 = "test-membership-channel-2"
 
-  async function join()
+  async function join(channelName: string)
   {
     if (chat)
     {
-      const channel = await chat.getChannel("test-channel-public")
+      const channel = await chat.getChannel(channelName)
       const channelMembership = await channel?.join(() => null)
       channelMembership?.membership.streamUpdates(async (membership) => {
-        await updateMembershipUI()
+        //  Stream updates on the channel as follows
+        console.log(membership)
       })
-      await updateMembershipUI()
-      const disconnectFunction = await channel?.connect((message: Message) => { })
-      setDisconnect(() => () => disconnectFunction)
-      console.log('joined channel')
+      
+      //  For brevity, ignore that this call could contain multiple pages of memberships
+      const {memberships} = await chat.currentUser.getMemberships()
+      setMyMemberships(memberships) 
     }
   }
 
-  async function updateMembershipUI()
+  async function leave(channelName: string)
   {
     if (chat)
     {
-      const myMemberships = await chat.currentUser.getMemberships()
-      setMembershipMsg("Number of channels I am a member of: " + myMemberships.memberships.length)
+      const channel = await chat.getChannel(channelName)
+      await channel?.leave();
+      //  For brevity, ignore that this call could contain multiple pages of memberships
+      const {memberships} = await chat.currentUser.getMemberships()
+      setMyMemberships(memberships) 
     }
-  }
-
-  async function updatePresenceUI(userIds: string[])
-  {
-    console.log("Currently present users: ", userIds)
-        var presentUsers = "Present Users (" + userIds.length + "): "
-        userIds.forEach((userId) => {
-          presentUsers += userId + ", "
-        }) 
-        setPresenceMsg(presentUsers)
-  }
-
-  async function leave()
-  {
-    if (chat)
-    {
-      const channel = await chat.getChannel("test-channel-public")
-      const leaveResult = await channel?.leave();
-      //  Try to force the presence leave event
-      await disconnect()
-      console.log('left channel')
-    }
-  }
-
-  async function wherePresent()
-  {
-    if (channel)
-    {
-      const channelIds = await channel.whoIsPresent()
-      updatePresenceUI(channelIds)
-    }
-  }
-
-  async function deleteChat()
-  {
-    window.location.href="http://www.pubnub.com"
   }
 
   useEffect(() => {
     async function initalizeChat() {
-      const queryParams = document.location.search
-      let userId
-      let userIdThem
-      if (queryParams.includes("primary")) {
-        userId = "primary"
-        userIdThem = "secondary"
-      }
-      else
-      {
-        userId = "secondary"
-        userIdThem = "primary"
-      }
-
       const chat = await Chat.init({
         publishKey: "pub-c-f41f1503-16e4-4c82-aa66-d29e231b7086",
         subscribeKey: "sub-c-9226da51-de37-4eb1-a5b1-7bbd42c8ab14",
-        userId: userId,
+        userId: "membership-user"    
       })
       
-      const userThem = (await chat.getUser(userIdThem)) || await chat.createUser(userIdThem, { name: userIdThem})
-      
       setChat(chat)
-      setOtherUser(userThem)
+
+      await chat.currentUser.update({name: "Test User"})
+      const {memberships} = await chat.currentUser.getMemberships()
+      setMyMemberships(memberships)
       
-      var channel = await chat.getChannel("test-channel-public")
-      if (!channel)
+      let channel1 = await chat.getChannel(CHANNEL_NAME_1)
+      if (!channel1)
       {
-        channel = await chat.createPublicConversation(
+        channel1 = await chat.createPublicConversation(
           {
-            channelId: "test-channel-public",
-            channelData: { name: "Test Channel" }
+            channelId: CHANNEL_NAME_1,
+            channelData: { name: "Test Channel 1" }
           }
         )
       }
-      const myMemberships = await chat.currentUser.getMemberships()
-      setMembershipMsg("Number of channels I am a member of: " + myMemberships.memberships.length)
-
-      setChannel(channel)
-
-      const stopUpdates = channel.streamPresence((userIds: string[]) => {
-        updatePresenceUI(userIds)
-      })
+      let channel2 = await chat.getChannel(CHANNEL_NAME_2)
+      if (!channel2)
+      {
+        channel2 = await chat.createPublicConversation(
+          {
+            channelId: CHANNEL_NAME_2,
+            channelData: { name: "Test Channel 2" }
+          }
+        )
+      }
     }
 
     initalizeChat()
@@ -125,18 +80,28 @@ export default function App() {
   if (!chat ) return <p>Loading...</p>
 
   return (
-    <main>
-      <h1>Presence: Channel Presence</h1>
-      <h3>User: {chat.currentUser.name}</h3> <button onClick={() => join()}>Join Channel</button> <button onClick={() => leave()}>Leave Channel</button> <button onClick={() => wherePresent()}>Query presence for test channel</button> {/*<button onClick={() => deleteChat()}>Delete Chat</button>
-      <h3>User: {users[1].name}</h3> <button onClick={() => join(1)}>Join Channel</button> <button onClick={() => leave(1)}>Leave Channel</button> <button onClick={() => wherePresent(1)}>Where Present?</button>*/}
-      <h3>Presence Information for Test Channel:</h3>
-        <span>{presenceMsg}</span>
+    <div className="App">
+      <h2>Channel Membership for {chat.currentUser.name}</h2>
+      <div className="Info">Join or Leave two predefined test channels.  You will be notified when your membership status changes</div>
+      <div className="Info">Refresh to see that this data persists</div>
+      <div className="ButtonSelection">
+      <button onClick={() => join(CHANNEL_NAME_1)}>Join Channel 1</button> 
+      <button onClick={() => join(CHANNEL_NAME_2)}>Join Channel 2</button> 
+      <button onClick={() => leave(CHANNEL_NAME_1)}>Leave Channel 1</button> 
+      <button onClick={() => leave(CHANNEL_NAME_2)}>Leave Channel 2</button> 
+      </div>
       <h3>Membership Information:</h3>
-        <span>{membershipMsg}</span>
-      
+        <ol className="">
+        {myMemberships.length === 0 && <li>Not a member of any channels</li>}
+        {myMemberships.map((membership) => {
+          return (
+            <li key={membership.channel.name} className="">
+              <div>{membership.user.name} is a member of {membership.channel.name}</div>
+              </li>
+            )
+        })}
+        </ol>
 
-      
-
-    </main>
+    </div>
   )
 }
