@@ -20,8 +20,8 @@ function App() {
   useEffect(() => {
     async function initalizeChat() {
       const chat = await Chat.init({
-        publishKey: "pub-c-f41f1503-16e4-4c82-aa66-d29e231b7086",
-        subscribeKey: "sub-c-9226da51-de37-4eb1-a5b1-7bbd42c8ab14",
+        publishKey: "pub-c-f2e19807-d24f-403f-b346-bd1418b442eb",
+        subscribeKey: "sub-c-08d83eac-3fed-473b-8f45-08015c983c82",
         userId: "reactions-user",
       })
       
