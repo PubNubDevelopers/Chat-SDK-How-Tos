@@ -73,7 +73,8 @@ function App() {
 
       let { messages } = await channel.getHistory( {count: 1} )
       if (!messages || messages.length !== 1 ) {
-        await handleResetApp();
+        await channel.sendText(THREAD_MESSAGE_TEXT)
+        window.location.reload();
         return;
       }
       let rootMessage = messages[0]
