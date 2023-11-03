@@ -44,8 +44,8 @@ function App() {
         await channel.sendText("How is everybody doing?")
         await channel.sendText("Looks like it's going to be a sunny day today")
         await channel.sendText("Wow, the PubNub Chat SDK is cool")
-        let { messages } = await channel.getHistory({count: 3})
-        setMessages(messages)
+        window.location.reload()
+        return
       }
       else {
         setMessages(messages)
