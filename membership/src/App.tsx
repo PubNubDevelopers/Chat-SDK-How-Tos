@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import { publish_key, subscribe_key } from './keys';
 import { Chat, Membership } from "@pubnub/chat"
 
 export default function App() {
   const [chat, setChat] = useState<Chat>()
   const [myMemberships, setMyMemberships] = useState<Membership[]>([])
 
+  const USER_ID = "membership-user"
   const CHANNEL_NAME_1 = "test-membership-channel-1"
   const CHANNEL_NAME_2 = "test-membership-channel-2"
 
@@ -39,11 +41,21 @@ export default function App() {
   }
 
   useEffect(() => {
+
     async function initalizeChat() {
+      //  IN PRODUCTION: Replace with your own logic to request an Access Manager token
+      //  For brevity, this demo does not request a new token after timeout
+      const accessManagerToken = await requestAccessManagerToken(USER_ID)
+      if (accessManagerToken === null)
+      {
+        console.log("Error retrieving access manager token")        
+        return
+      }
       const chat = await Chat.init({
-        publishKey: "pub-c-f2e19807-d24f-403f-b346-bd1418b442eb",
-        subscribeKey: "sub-c-08d83eac-3fed-473b-8f45-08015c983c82",
-        userId: "membership-user"    
+        publishKey: publish_key,
+        subscribeKey: subscribe_key,
+        userId: USER_ID,
+        authKey: accessManagerToken
       })
       
       setChat(chat)
@@ -76,6 +88,26 @@ export default function App() {
 
     initalizeChat()
   }, [])
+
+  //  ONLY REQUIRED FOR THE DEMO TO USE ACCESS-MANAGER RESTRICTED KEYS.  DO NOT COPY INTO YOUR OWN CODE
+  async function requestAccessManagerToken (userId: string) {
+    try {
+      const TOKEN_SERVER =
+        'https://devrel-demos-access-manager.netlify.app/.netlify/functions/api/chatsdk-how-tos'
+      const response = await fetch(`${TOKEN_SERVER}/grant`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ UUID: userId })
+      })
+      const token = (await response.json()).body.token
+      return token
+    } catch (e) {
+      console.log('failed to create token ' + e)
+      return null
+    }
+  }
 
   if (!chat ) return <p>Loading...</p>
 
