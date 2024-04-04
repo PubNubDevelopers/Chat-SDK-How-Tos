@@ -43,7 +43,7 @@ To run any of these projects yourself you will need a PubNub account
 
 1. Enable the Stream Controller feature on your keyset
 
-1. Enable the App Context feature on your keyset.  Make sure you check all the checkboxes related to events, i.e. User and Channel Metadata Events as well as Membership Events.
+1. Enable the App Context feature on your keyset.  Make sure you check all the checkboxes related to events, i.e. User and Channel Metadata Events as well as Membership Events.  Depending on which demo you are using, you may also need to uncheck the two 'Disallow Get all User / Channel Metadata' options.
 
 1. The hosted variant of this app uses Functions for moderation, specifically [https://www.pubnub.com/integrations/chat-message-profanity-filter/](https://www.pubnub.com/integrations/chat-message-profanity-filter/).
 
