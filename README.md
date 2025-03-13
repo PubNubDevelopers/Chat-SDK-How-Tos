@@ -21,7 +21,7 @@ To run any of these projects yourself you will need a PubNub account
 
 - [PubNub Account](#pubnub-account) (*Free*)
 
-<a href="https://admin.pubnub.com/signup">
+<a href="https://admin.pubnub.com">
 	<img alt="PubNub Signup" src="https://i.imgur.com/og5DDjf.png" width=260 height=97/>
 </a>
 
